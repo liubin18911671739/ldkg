@@ -1,0 +1,25 @@
+你是一个人工智能方面专家。
+帮我设计一个从 neo4j 中查询数据库数据，并使用知识图谱的可视化放方式显示的系统。
+系统需求如下： 
+1.使用 flask 作为 web 框架 
+2.使用 bootstrap 作为系统样式实现 
+3.系统形式仿照 google 外观 
+4.数据库使用 neo4j 图数据库 
+5.图谱可视化使用 Cypher
+6.系统可以与同学或老师针对该高校图书馆、网络和通知进行智能问题，通过在neo4j图数据库中查询如果存在就将查询结果通过chatgpt的对话形式返回答案，如果不存在就直接显示该问题在chatgpt上的答案。
+7.老师或管理员可以通过图数据库查询高校的科研数据，并通过Cypher，展示科学地图
+7.老师或管理员可以通过图数据库查询高校的教学数据，并通过Cypher，展示科学地图
+
+
+
+You are an expert in Artificial Intelligence.
+Help me design a system that queries database data from neo4j and displays it using a visual put of knowledge graph.
+The system requirements are as follows: 
+1. Use flask as the web framework 
+2. use bootstrap as the system style implementation 
+3. system form modeled after google appearance 
+4. database using neo4j graph database 
+5. map visualization using Cypher
+6. the system can be with students or teachers for the university library, network and notification of intelligent questions, through the neo4j graph database query if it exists on the query results through the chatgpt dialogue form to return to the answer, if it does not exist on the direct display of the question in the chatgpt on the answer.
+7. teachers or administrators can query the university's scientific research data through the graph database, and through the Cypher, show the map of science
+7. Teachers or administrators can query the university's teaching data through the graph database, and through Cypher, display map of science
