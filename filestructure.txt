@@ -67,3 +67,159 @@ run.py: The entry point script to run your Flask app.
 requirements.txt: Lists all Python package dependencies for your project.
 
 This structure is just a starting point. Depending on your specific requirements and preferences, you might choose to organize it differently.
+
+
+
+
+intelligent_querying_system/
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── controllers/
+│   │   ├── __init__.py
+│   │   ├── search_controller.py
+│   │   ├── research_data_controller.py
+│   │   └── teaching_data_controller.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── search_service.py
+│   │   ├── research_data_service.py
+│   │   └── teaching_data_service.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── research_data_model.py
+│   │   └── teaching_data_model.py
+│   ├── database/
+│   │   ├── __init__.py
+│   │   └── neo4j_client.py
+│   ├── chatgpt/
+│   │   ├── __init__.py
+│   │   ├── chatgpt_client.py
+│   │   └── response_handler.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── styles.css
+│   │   │   └── bootstrap.min.css
+│   │   └── js/
+│   │       ├── app.js
+│   │       └── bootstrap.min.js
+│   └── templates/
+│       ├── base.html
+│       ├── search.html
+│       ├── research_data.html
+│       └── teaching_data.html
+├── config.py
+├── requirements.txt
+└── run.py
+
+
+Certainly! Here's a proposed code structure for the intelligent querying and visualization system:
+
+intelligent_querying_system/
+├── app/
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── controllers/
+│   │   ├── __init__.py
+│   │   ├── search_controller.py
+│   │   ├── research_data_controller.py
+│   │   └── teaching_data_controller.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── search_service.py
+│   │   ├── research_data_service.py
+│   │   └── teaching_data_service.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── research_data_model.py
+│   │   └── teaching_data_model.py
+│   ├── database/
+│   │   ├── __init__.py
+│   │   └── neo4j_client.py
+│   ├── chatgpt/
+│   │   ├── __init__.py
+│   │   ├── chatgpt_client.py
+│   │   └── response_handler.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── styles.css
+│   │   │   └── bootstrap.min.css
+│   │   └── js/
+│   │       ├── app.js
+│   │       └── bootstrap.min.js
+│   └── templates/
+│       ├── base.html
+│       ├── search.html
+│       ├── research_data.html
+│       └── teaching_data.html
+├── config.py
+├── requirements.txt
+└── run.py
+Let's go through each component:
+
+app/: The main Flask application directory.
+
+__init__.py: Initializes the Flask application and sets up configurations.
+
+routes.py: Defines the routes for handling HTTP requests.
+
+controllers/: Contains the controller modules for handling different functionalities.
+
+search_controller.py: Handles the logic for search queries and interacts with the search service.
+
+research_data_controller.py: Handles the logic for retrieving and processing research data.
+
+teaching_data_controller.py: Handles the logic for retrieving and processing teaching data.
+
+services/: Contains the service modules for business logic and data manipulation.
+
+search_service.py: Implements the logic for searching the database and integrating with ChatGPT.
+
+research_data_service.py: Implements the logic for retrieving and processing research data from the database.
+
+teaching_data_service.py: Implements the logic for retrieving and processing teaching data from the database.
+
+models/: Contains the data model modules for representing data entities.
+
+research_data_model.py: Defines the data model for research data.
+
+teaching_data_model.py: Defines the data model for teaching data.
+
+database/: Contains the database-related modules.
+
+neo4j_client.py: Implements the client for interacting with the Neo4j database.
+
+chatgpt/: Contains the ChatGPT integration modules.
+
+chatgpt_client.py: Implements the client for communicating with the ChatGPT API.
+
+response_handler.py: Handles the processing and formatting of ChatGPT responses.
+
+static/: Contains static files such as CSS and JavaScript.
+
+css/: Contains CSS files for styling the application.
+
+js/: Contains JavaScript files for client-side functionality.
+
+templates/: Contains HTML templates for rendering the user interface.
+
+base.html: The base template that other templates extend.
+
+search.html: The template for the search page.
+
+research_data.html: The template for the research data visualization page.
+
+teaching_data.html: The template for the teaching data visualization page.
+
+config.py: Contains configuration settings for the Flask application.
+
+requirements.txt: Lists the Python dependencies required for the project.
+
+run.py: The entry point for running the Flask application.
+
+This code structure organizes the system into logical components and follows a modular approach. The app/ directory contains the main Flask application, with separate modules for routes, controllers, services, models, database, and ChatGPT integration.
+
+The static/ directory holds static files like CSS and JavaScript, while the templates/ directory contains HTML templates for rendering the user interface.
+
+The config.py file stores configuration settings, and the requirements.txt file lists the project dependencies.
+

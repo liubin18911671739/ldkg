@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block title %}Search{% endblock %} {% block content
+%}
+<div class="container">
+  <h1 class="text-center my-4">Search</h1>
+  <form id="search-form" method="POST" action="{{ url_for('main.search') }}">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        name="query"
+        placeholder="Enter your search query"
+        required
+      />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+  <div id="search-results" class="mt-4"></div>
+</div>
+{% endblock %} {% block extra_scripts %}
+<script>
+  $(document).ready(function () {
+    $("#search-form").on("submit", function (event) {
+      event.preventDefault();
+      var form = $(this);
+      var url = form.attr("action");
+      var data = form.serialize();
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        success: function (response) {
+          var resultsContainer = $("#search-results");
+          resultsContainer.empty();
+
+          if (response.results.length > 0) {
+            var resultList = $("<ul>").addClass("list-group");
+            response.results.forEach(function (result) {
+              var listItem = $("<li>").addClass("list-group-item").text(result);
+              resultList.append(listItem);
+            });
+            resultsContainer.append(resultList);
+          } else {
+            var noResults = $("<p>").text("No results found.");
+            resultsContainer.append(noResults);
+          }
+        },
+        error: function () {
+          var errorMessage = $("<p>").text(
+            "An error occurred. Please try again."
+          );
+          $("#search-results").empty().append(errorMessage);
+        },
+      });
+    });
+  });
+</script>
+{% endblock %}
