@@ -1,12 +1,11 @@
 - [融合大语言模型和深度学习的多模态知识图谱 展示平台 LDKG](#融合大语言模型和深度学习的多模态知识图谱-展示平台-ldkg)
   - [开发环境](#开发环境)
   - [使用库](#使用库)
+  - [安装](#安装)
 
 # 融合大语言模型和深度学习的多模态知识图谱 展示平台 LDKG
 
 https://github.com/liubin18911671739/ldkg.git
-
-key = "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"
 
 ## 开发环境
 
@@ -27,6 +26,10 @@ UI: jinja2
 
 jinja2
 flask
+
+## 安装
+
+neo4j
 
 架构：
 

@@ -1,70 +1,43 @@
+import os
 from py2neo import Graph
 
 
-def create_graph(uri, user, password):
-    """
-    创建Neo4j图数据库连接
-    :param uri: Neo4j服务器的URI
-    :param user: 用户名
-    :param password: 密码
-    :return: Graph对象
-    """
-    graph = Graph(uri, auth=(user, password))
-    return graph
+class Neo4jUtils:
+    def __init__(self):
+        uri = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
+        user = os.getenv("NEO4J_USER", "neo4jname")
+        password = os.getenv("NEO4J_PASSWORD", "neo4jpwd")
+
+        self.graph = self.create_graph(uri, user, password)
+
+    def create_graph(self, uri, user, password):
+        try:
+            graph = Graph(uri, auth=(user, password))
+            return graph
+        except Exception as e:
+            print(f"Failed to create a connection to the graph: {e}")
+            raise
 
 
-def run_query(graph, query, parameters=None):
-    """
-    在Neo4j图数据库中执行Cypher查询
-    :param graph: Graph对象
-    :param query: Cypher查询语句
-    :param parameters: 查询参数(可选)
-    :return: 查询结果
-    """
-    result = graph.run(query, parameters=parameters)
-    return result
+# Get the graph instance
+utils = Neo4jUtils()
+graph = utils.graph
 
+try:
+    # Query all nodes
+    nodes = graph.run("MATCH (n) RETURN n").data()
 
-def create_node(graph, label, properties):
-    """
-    在Neo4j图数据库中创建节点
-    :param graph: Graph对象
-    :param label: 节点标签
-    :param properties: 节点属性(字典类型)
-    :return: 创建的节点
-    """
-    node = graph.create(properties)[0]
-    node.add_label(label)
-    return node
+    # Print all nodes
+    print("Nodes:")
+    print("\n".join([str(node["n"]) for node in nodes]))
 
+    # Query all relationships
+    relationships = graph.run("MATCH ()-[r]->() RETURN r").data()
 
-def create_relationship(graph, node1, node2, relationship_type, properties=None):
-    """
-    在Neo4j图数据库中创建关系
-    :param graph: Graph对象
-    :param node1: 起始节点
-    :param node2: 目标节点
-    :param relationship_type: 关系类型
-    :param properties: 关系属性(字典类型,可选)
-    :return: 创建的关系
-    """
-    relationship = graph.create((node1, relationship_type, node2, properties))
-    return relationship
+    # Print all relationships
+    print("\nRelationships:")
+    print("\n".join([str(relationship["r"]) for relationship in relationships]))
 
-
-def delete_node(graph, node):
-    """
-    从Neo4j图数据库中删除节点
-    :param graph: Graph对象
-    :param node: 要删除的节点
-    """
-    graph.delete(node)
-
-
-def delete_relationship(graph, relationship):
-    """
-    从Neo4j图数据库中删除关系
-    :param graph: Graph对象
-    :param relationship: 要删除的关系
-    """
-    graph.separate(relationship)
+except Exception as e:
+    print(f"Failed to query the graph: {e}")
+    raise

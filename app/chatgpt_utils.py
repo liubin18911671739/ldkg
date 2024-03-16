@@ -1,15 +1,13 @@
 import openai
 import requests
 import json
+import os
 
 
 class ChatGPT:
+
     def __init__(self, api_key=None):
-        """
-        初始化ChatGPT类
-        :param api_key: OpenAI API密钥
-        """
-        self.api_key = api_key
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.initialize_chatgpt()
 
     def initialize_chatgpt(self):
@@ -45,9 +43,7 @@ class ChatGPT:
             return None
 
 
-key = "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"
-
-chatgpt = ChatGPT(key)
+chatgpt = ChatGPT()
 
 prompt = "What is the capital of France?"
 response = chatgpt.generate_response(prompt)
