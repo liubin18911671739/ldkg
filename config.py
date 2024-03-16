@@ -7,9 +7,7 @@ class Config:
         self.NEO4J_URI = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
         self.NEO4J_USERNAME = os.getenv("NEO4J_USERNAME", "neo4j")
         self.NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "neo4j")
-        self.OPENAI_API_KEY = os.getenv(
-            "OPENAI_API_KEY", "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"
-        )
+        self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
 # The child classes will need to call the parent constructor:
