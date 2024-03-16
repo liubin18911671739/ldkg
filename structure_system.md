@@ -1,86 +1,211 @@
-Here's a high-level system structure for the intelligent querying and visualization system you described:
-
 ```
-+---------------------------+
-|         Front-end         |
-+---------------------------+
-|  +-----------------------+ |
-|  |  User Interface (UI)  | |
-|  +-----------------------+ |
-|  |  - Search Page        | |
-|  |  - Research Data Page | |
-|  |  - Teaching Data Page | |
-|  +-----------------------+ |
-|                            |
-|  +-----------------------+ |
-|  |  UI Components        | |
-|  +-----------------------+ |
-|  |  - Search Bar         | |
-|  |  - Result Display     | |
-|  |  - Data Visualization | |
-|  +-----------------------+ |
-+----------------------------+
-           |     |
-           |     |
-           |     |
-+----------------------------+
-|         Back-end          |
-+----------------------------+
-|  +-----------------------+ |
-|  |  Flask Application    | |
-|  +-----------------------+ |
-|  |  - Routes             | |
-|  |  - Controllers        | |
-|  |  - Services           | |
-|  +-----------------------+ |
-|                            |
-|  +-----------------------+ |
-|  |  Database (Neo4j)     | |
-|  +-----------------------+ |
-|  |  - Data Models        | |
-|  |  - Cypher Queries     | |
-|  +-----------------------+ |
-|                            |
-|  +-----------------------+ |
-|  |  ChatGPT Integration  | |
-|  +-----------------------+ |
-|  |  - API Client         | |
-|  |  - Response Handling  | |
-|  +-----------------------+ |
-+----------------------------+
+project_name/
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── neo4j_utils.py
+│   ├── chatgpt_utils.py
+│   ├── visualization_utils.py
+│   ├── main/
+│   │   ├── __init__.py
+│   │   ├── routes.py
+│   │   ├── forms.py
+│   │   └── utils.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   ├── js/
+│   │   │   ├── visualization.js
+│   │   │   └── main.js
+│   │   └── images/
+│   └── templates/
+│       ├── base.html
+│       ├── index.html
+│       ├── search.html
+│       ├── result.html
+│       └── visualization.html
+├── config.py
+├── requirements.txt
+├── run.py
+├── Dockerfile
+└── README.md
 ```
 
-Let's break down each component:
+以下是每个文件的内容:
 
-1. Front-end:
+**app/**init**.py**
 
-   - User Interface (UI):
-     - Search Page: Allows users to enter their queries and displays search results.
-     - Research Data Page: Displays the map of science visualization for scientific research data.
-     - Teaching Data Page: Displays the map of science visualization for teaching data.
-   - UI Components:
-     - Search Bar: Accepts user input for queries.
-     - Result Display: Shows the search results or answers retrieved from the database or ChatGPT.
-     - Data Visualization: Renders the interactive map of science visualizations.
+```python
+from flask import Flask
+from config import config
+from flask_bootstrap import Bootstrap
+from neo4j import GraphDatabase
 
-2. Back-end:
-   - Flask Application:
-     - Routes: Defines the API endpoints for handling requests from the front-end.
-     - Controllers: Contains the logic for processing requests, querying the database, and integrating with ChatGPT.
-     - Services: Encapsulates the business logic and data manipulation operations.
-   - Database (Neo4j):
-     - Data Models: Defines the graph data models and relationships for storing data in Neo4j.
-     - Cypher Queries: Contains the Cypher queries for retrieving data from the Neo4j database.
-   - ChatGPT Integration:
-     - API Client: Handles the communication with the ChatGPT API for generating answers.
-     - Response Handling: Processes the responses received from ChatGPT and formats them for display.
+# Initialize Flask app
+app = Flask(__name__)
 
-The front-end interacts with the back-end through API calls. When a user submits a query, the front-end sends a request to the Flask application. The application routes the request to the appropriate controller, which then processes the query.
+# Configure the app based on the environment
+env = 'development'  # or 'production'
+app.config.from_object(config[env])
 
-The controller first checks if the query can be answered using the data stored in the Neo4j database. It executes the relevant Cypher queries to retrieve the data. If the data is found, it is returned to the front-end for display.
+# Initialize Flask-Bootstrap
+bootstrap = Bootstrap(app)
 
-If the query cannot be answered using the database, the controller sends a request to the ChatGPT API to generate an answer. The ChatGPT integration component handles the API communication and response processing. The generated answer is then returned to the front-end for display.
+# Connect to Neo4j database
+driver = GraphDatabase.driver(app.config['NEO4J_URI'], auth=(app.config['NEO4J_USER'], app.config['NEO4J_PASSWORD']))
 
-For the research data and teaching data visualizations, the front-end sends requests to the Flask application to fetch the relevant data from the Neo4j database. The application executes the appropriate Cypher queries and returns the data to the front-end. The front-end then uses the data visualization components to render the interactive map of science visualizations.
+# Import and register blueprints
+from app.main import main_bp
+app.register_blueprint(main_bp)
 
-This system structure separates the concerns between the front-end and back-end, allowing for modular development and maintainability. The Flask application acts as the central controller, orchestrating the data flow between the front-end, database, and ChatGPT integration.
+# Import utilities
+from app import neo4j_utils, chatgpt_utils, visualization_utils
+```
+
+**app/models.py**
+
+```python
+# 在这里定义数据模型(如果需要)
+```
+
+**app/neo4j_utils.py**
+
+```python
+# 在这里定义与 Neo4j 数据库交互的实用程序函数
+```
+
+**app/chatgpt_utils.py**
+
+```python
+# 在这里定义与 ChatGPT 集成相关的实用程序函数
+```
+
+**app/visualization_utils.py**
+
+```python
+# 在这里定义知识图谱可视化相关的实用程序函数
+```
+
+**app/main/**init**.py**
+
+```python
+from flask import Blueprint
+
+main_bp = Blueprint('main', __name__, template_folder='templates')
+
+from app.main import routes
+```
+
+**app/main/routes.py**
+
+```python
+from flask import render_template, request
+from app.main import main_bp
+from app import neo4j_utils, chatgpt_utils, visualization_utils
+
+@main_bp.route('/', methods=['GET', 'POST'])
+def index():
+    # 处理搜索表单提交
+    if request.method == 'POST':
+        query = request.form['query']
+        # 执行查询和处理逻辑
+        # ...
+
+    return render_template('index.html')
+
+@main_bp.route('/search', methods=['GET', 'POST'])
+def search():
+    # 处理搜索表单提交
+    # ...
+
+    return render_template('search.html')
+
+@main_bp.route('/result', methods=['GET'])
+def result():
+    # 展示搜索结果
+    # ...
+
+    return render_template('result.html')
+
+@main_bp.route('/visualization', methods=['GET'])
+def visualization():
+    # 展示知识图谱可视化
+    # ...
+
+    return render_template('visualization.html')
+```
+
+**app/main/forms.py**
+
+```python
+# 在这里定义表单(如果需要)
+```
+
+**app/main/utils.py**
+
+```python
+# 在这里定义与主要功能相关的实用程序函数
+```
+
+**app/templates/base.html**
+
+```html
+<!-- 基础模板 -->
+```
+
+**app/templates/index.html**
+
+```html
+<!-- 主页模板 -->
+```
+
+**app/templates/search.html**
+
+```html
+<!-- 搜索页面模板 -->
+```
+
+**app/templates/result.html**
+
+```html
+<!-- 搜索结果页面模板 -->
+```
+
+**app/templates/visualization.html**
+
+```html
+<!-- 知识图谱可视化页面模板 -->
+```
+
+**config.py**
+
+```python
+# 配置文件, 包含应用程序配置设置
+```
+
+**requirements.txt**
+
+```
+# 列出项目依赖项
+```
+
+**run.py**
+
+```python
+from app import app
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+**Dockerfile**
+
+```dockerfile
+# Dockerfile 用于构建 Docker 映像
+```
+
+**README.md**
+
+```markdown
+# 项目说明和文档
+```

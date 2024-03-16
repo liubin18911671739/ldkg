@@ -1,21 +1,29 @@
 import os
-# from dotenv import load_dotenv
 
-# # Load environment variables from .env file
-# load_dotenv()
 
 class Config:
-    # Flask configuration
-    SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key')
+    def __init__(self):
+        self.SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key")
+        self.NEO4J_URI = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
+        self.NEO4J_USERNAME = os.getenv("NEO4J_USERNAME", "neo4j")
+        self.NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "neo4j")
+        self.OPENAI_API_KEY = os.getenv(
+            "OPENAI_API_KEY", "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"
+        )
 
-    # Neo4j database configuration
-    NEO4J_URI = os.getenv('NEO4J_URI', 'bolt://localhost:7687')
-    NEO4J_USERNAME = os.getenv('NEO4J_USERNAME', 'neo4j')
-    NEO4J_PASSWORD = os.getenv('NEO4J_PASSWORD', 'password')
 
-    # ChatGPT API configuration
-    CHATGPT_API_KEY = os.getenv('CHATGPT_API_KEY', 'your-chatgpt-api-key')
-    CHATGPT_API_URL = os.getenv('CHATGPT_API_URL', 'https://api.openai.com/v1/chat/completions')
+# The child classes will need to call the parent constructor:
+class DevelopmentConfig(Config):
+    def __init__(self):
+        super().__init__()
+        self.DEBUG = True
 
-    # Other configuration options
-    # Add any additional configuration settings here
+
+class TestingConfig(Config):
+    def __init__(self):
+        super().__init__()
+        self.TESTING = True
+
+
+class ProductionConfig(Config):
+    pass  # Will use only the base config

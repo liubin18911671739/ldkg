@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block title %}科研数据{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>科研数据可视化</h1>
+  <div id="research-graph"></div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script>
+  var researchData = {{ research_data|safe }};
+</script>
+<script src="{{ url_for('static', filename='js/research.js') }}"></script>
+{% endblock %}

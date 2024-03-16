@@ -1,24 +1,21 @@
 from flask import Flask
 from config import Config
 from flask_bootstrap import Bootstrap
-from app.database.neo4j_client import Neo4jClient
-from app.chatgpt.chatgpt_client import ChatGPTClient
+from neo4j import GraphDatabase
 
-bootstrap = Bootstrap()
-neo4j_client = Neo4jClient()
-chatgpt_client = ChatGPTClient()
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
-    # Initialize extensions
-    bootstrap.init_app(app)
-    neo4j_client.init_app(app)
-    chatgpt_client.init_app(app)
+    bootstrap = Bootstrap(app)
 
-    # Register blueprints
-    from app.routes import main_bp
-    app.register_blueprint(main_bp)
+    with app.app_context():
+        from main import bp as main_blueprint
+
+        app.register_blueprint(main_blueprint)
 
     return app
+
+
+app = create_app()

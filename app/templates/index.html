@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block title %}首页{% endblock %} {% block content
+%}
+<div class="jumbotron">
+  <h1 class="display-4">欢迎来到智能问答和可视化系统!</h1>
+  <p class="lead">在这里,您可以进行智能问答和查看科研教学数据的可视化。</p>
+  <hr class="my-4" />
+  <form id="search-form">
+    <div class="form-group">
+      <label for="query">请输入您的问题:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="query"
+        name="query"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">搜索</button>
+  </form>
+</div>
+
+<div id="search-results"></div>
+
+<div id="search-details"></div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}

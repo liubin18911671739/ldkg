@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block title %}教学数据{% endblock %} {% block
+content %}
+<div class="container">
+  <h1>教学数据可视化</h1>
+  <div id="teaching-graph"></div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script>
+  var teachingData = {{ teaching_data|safe }};
+</script>
+<script src="{{ url_for('static', filename='js/teaching.js') }}"></script>
+{% endblock %}
