@@ -45,9 +45,10 @@ class ChatGPT:
             return None
 
 
-chatgpt = ChatGPT()
+key = "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"
 
-key = ""
+chatgpt = ChatGPT(key)
+
 prompt = "What is the capital of France?"
-response = chatgpt.generate_response(prompt, key)
+response = chatgpt.generate_response(prompt)
 print(response)
